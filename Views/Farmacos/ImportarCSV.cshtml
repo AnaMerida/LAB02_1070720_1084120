@@ -1,0 +1,19 @@
+﻿@model IEnumerable<LAB02_1070720_1084120.Models.Farmacos>
+
+@{
+    ViewData["Title"] = "ImportarCSV";
+}
+
+<h1>Importar Archivo</h1>
+
+<h4> Subir Archivo</h4>
+
+<form method="post" enctype="multipart/form-data" asp-controller="Farmacos" asp-action="ImportarCSV">
+    <input type="file" name="ArchivoCSV" />
+    <p>
+
+
+
+    </p>
+    <button type="submit">Subir archivo CSV</button>
+</form>
