@@ -20,7 +20,7 @@ namespace LAB02_1070720_1084120.Controllers
 {
     public class FarmacosController : Controller
     {
-        public static ArbolBinario<Farmacos> ArbolBinario = new ArbolBinario<Farmacos>();
+        public static ArbolBinario<DatosArbol> ArbolBinario = new ArbolBinario<DatosArbol>();
         public static ListaArtesanal<Farmacos> ListaArtesanalFarmacos = new ListaArtesanal<Farmacos>();
         public ActionResult ImportarCSV()
         {
@@ -55,9 +55,9 @@ namespace LAB02_1070720_1084120.Controllers
                                 Fields[5] = Fields[5].Remove(Fields[5].Length - 1, 1);
                             }
                             Farmacos Farmaco = new Farmacos();
-                            //NodoArbol<> FarmacoArbol = new NodoArbol<>();
-                            //FarmacoArbol.Id = Convert.ToInt32(Fields[0]);
-                            //FarmacoArbol.Nombre = Fields[1];
+                            DatosArbol FarmacoArbol = new DatosArbol();
+                            FarmacoArbol.IdA = Convert.ToInt32(Fields[0]);
+                            FarmacoArbol.NombreA = Fields[1];
                             Farmaco.Id = Convert.ToInt32(Fields[0]);
                             Farmaco.Nombre = Fields[1];
                             Farmaco.Descripcion = Fields[2];
@@ -65,11 +65,7 @@ namespace LAB02_1070720_1084120.Controllers
                             Farmaco.precio = Convert.ToDouble(Fields[4]);
                             Farmaco.existencia = Convert.ToInt32(Fields[5]);
                             ListaArtesanalFarmacos.AddArtesanal(Farmaco);
-                            ArbolBinario.AddArbol(Farmaco, Farmaco.OrdenarPorNombre);
-                            //ListaArtesanalFarmacos.AddDelegado(Farmaco.OrdenarPorNombre, Farmaco, ListaArtesanalFarmacos);
-                            //ListaArtesanalFarmacos.AddArtesanal(Farmaco);
-                            //ListaArtesanalFarmacos.verificar(Farmaco.Nombre);
-                            
+                            ArbolBinario.AddArbol(FarmacoArbol, FarmacoArbol.OrdenarPorNombreArbol);  
                         }
                         else
                         {

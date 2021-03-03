@@ -15,38 +15,6 @@ namespace ClassLibrary
 
         public ListaArtesanal() { }
 
-        //public ListaArtesanal<T> AgregarDelegado(Delegate delegates, T farmaco, ListaArtesanal<T> L)
-        //{
-        //    Nodo<T> nuevo = L.inicio;
-        //    ListaArtesanal<T> temp = new ListaArtesanal<T>();
-
-        //    if (inicio == null)
-        //    {
-        //        temp.AddArtesanal(nuevo.DatosFarmacos);
-        //    }
-        //    else
-        //    {
-        //        while (nuevo != L.fin.siguiente)
-        //        {
-        //            if (Convert.ToInt32(delegates.DynamicInvoke(nuevo.DatosFarmacos, farmaco)) != 0)
-        //            {
-        //                temp.AddArtesanal(nuevo.DatosFarmacos);
-        //                nuevo = nuevo.siguiente;
-        //            }
-        //            else
-        //            {
-        //                nuevo = nuevo.siguiente;
-        //            }
-        //        }
-        //    }
-        //    return temp;
-        //}
-
-        //public void AddDelegado(Delegate delegates, T farmaco, ListaArtesanal<T> L)
-        //{
-        //    AgregarDelegado(delegates, farmaco, L);
-        //}
-
         protected override void Agregar(T farmaco)
         {
             Nodo<T> nuevo = new Nodo<T>();

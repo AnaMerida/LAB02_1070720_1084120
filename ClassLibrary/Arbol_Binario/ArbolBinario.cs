@@ -8,26 +8,27 @@ namespace ClassLibrary
 {
     public class ArbolBinario<T> : InterfazArbol<T> where T :IComparable
     {
-        private NodoArbol<T> padre;
-
+        NodoArbol<T> padre = new NodoArbol<T>();
+        public int contador = 0;
         public ArbolBinario(){}
         //AGREGAR
         protected override void AgregarArbol(T farmaco, Delegate delegates, NodoArbol<T> padre) 
         {
-            if (padre == null)
+            if (padre.DatoNodoArbol == null)
             {
-                padre.DatosArbol = farmaco;
-                padre.izquierdo = null;
-                padre.derecho = null;
+                padre.DatoNodoArbol = farmaco;
+                padre.izquierdo = new NodoArbol<T>();
+                padre.derecho = new NodoArbol<T>();
+                contador++;
             }
             else
             {
-                if (Convert.ToInt32(delegates.DynamicInvoke(padre.DatosArbol, farmaco)) == -1)
+                if (Convert.ToInt32(delegates.DynamicInvoke(padre.DatoNodoArbol, farmaco)) == 1)
                 {
                     //izquierda
                     AgregarArbol(farmaco, delegates, padre.izquierdo);
                 }
-                else if (Convert.ToInt32(delegates.DynamicInvoke(padre.DatosArbol, farmaco)) == 1)
+                else if (Convert.ToInt32(delegates.DynamicInvoke(padre.DatoNodoArbol, farmaco)) == -1)
                 {
                     //derecho
                     AgregarArbol(farmaco, delegates, padre.derecho);
@@ -39,8 +40,17 @@ namespace ClassLibrary
             AgregarArbol(farmaco,  delegates, padre);
         }
 
-
         //ELIMINAR
+        //protected override void EliminarArbol (T farmaco, Delegate delegates, Nodo<T> padre)
+        //{
+        //    if (padre != null)
+        //    {
+        //        //if ()
+        //        //{
+
+        //        //}
+        //    }
+        //}
 
         //BUSQUEDA
        

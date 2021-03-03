@@ -7,7 +7,7 @@ namespace ClassLibrary
     public abstract class InterfazArbol<T>
     {
         protected abstract void AgregarArbol(T farmaco, Delegate delegates, NodoArbol<T> padre);
-       
+        //protected override void EliminarArbol(T farmaco, Delegate delegates, NodoArbol<T> padre);
 
     }
 }
