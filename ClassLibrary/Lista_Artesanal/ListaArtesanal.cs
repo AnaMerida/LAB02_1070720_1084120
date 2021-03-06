@@ -174,6 +174,17 @@ namespace ClassLibrary
             return ListaBusqueda;
         }
 
+        public void Reabastecer()
+        {
+            Nodo<T> nuevo = new Nodo<T>();
+            Nodo<T> nuevo2 = new Nodo<T>();
+            while (nuevo != null)
+            {
+
+                nuevo = nuevo.siguiente;
+            }
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             var nodo = inicio;

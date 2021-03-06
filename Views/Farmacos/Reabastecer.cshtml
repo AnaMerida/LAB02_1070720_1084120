@@ -1,0 +1,55 @@
+﻿@model IEnumerable<LAB02_1070720_1084120.Models.Farmacos>
+
+@{
+    ViewData["Title"] = "Reabastecer";
+}
+
+<h1>Farmacos sin existencias</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Casa_productora)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Casa_productora)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="btn-group" role="group">
+    <a asp-controller="Farmacos" asp-action="Index"
+       class="btn btn-primary">
+        Regresar al menu principal
+    </a>
+</div>

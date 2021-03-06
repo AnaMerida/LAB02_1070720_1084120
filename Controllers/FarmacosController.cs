@@ -33,54 +33,62 @@ namespace LAB02_1070720_1084120.Controllers
         [HttpPost]
         public IActionResult ImportarCSV(IFormFile ArchivoCSV)
         {
-            if (ArchivoCSV.FileName.Contains(".csv"))
+            if (ArchivoCSV != null)
             {
-                using (var reader = new StreamReader(ArchivoCSV.OpenReadStream()))
+                if (ArchivoCSV.FileName.Contains(".csv"))
                 {
-                    string archivolineas = reader.ReadToEnd().Remove(0, 57);
-                    foreach (string linea in archivolineas.Split("\n"))
+                    using (var reader = new StreamReader(ArchivoCSV.OpenReadStream()))
                     {
-                        if (!string.IsNullOrEmpty(linea))
+                        string archivolineas = reader.ReadToEnd().Remove(0, 57);
+                        foreach (string linea in archivolineas.Split("\n"))
                         {
-                            Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-                            String[] Fields = CSVParser.Split(linea);
-                            for (int i = 0; i < Fields.Length; i++)
+                            if (!string.IsNullOrEmpty(linea))
                             {
-                                Fields[i] = Fields[i].TrimStart(' ', '"');
-                                Fields[i] = Fields[i].TrimEnd('"');
+                                Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+                                String[] Fields = CSVParser.Split(linea);
+                                for (int i = 0; i < Fields.Length; i++)
+                                {
+                                    Fields[i] = Fields[i].TrimStart(' ', '"');
+                                    Fields[i] = Fields[i].TrimEnd('"');
+                                }
+                                if (Fields[4].Contains("$"))
+                                {
+                                    Fields[4] = Fields[4].TrimStart('$', ' ');
+                                }
+                                if (Fields[5].Contains("\r"))
+                                {
+                                    Fields[5] = Fields[5].Remove(Fields[5].Length - 1, 1);
+                                }
+                                Farmacos Farmaco = new Farmacos();
+                                DatosArbol FarmacoArbol = new DatosArbol();
+                                FarmacoArbol.IdA = Convert.ToInt32(Fields[0]);
+                                FarmacoArbol.NombreA = Fields[1];
+                                Farmaco.Id = Convert.ToInt32(Fields[0]);
+                                Farmaco.Nombre = Fields[1];
+                                Farmaco.Descripcion = Fields[2];
+                                Farmaco.Casa_productora = Fields[3];
+                                Farmaco.Precio = Convert.ToDouble(Fields[4]);
+                                Farmaco.Existencia = Convert.ToInt32(Fields[5]);
+                                ListaArtesanalFarmacos.AddArtesanal(Farmaco);
+                                ArbolBinario.AddArbol(FarmacoArbol, FarmacoArbol.OrdenarPorNombreArbol);
                             }
-                            if (Fields[4].Contains("$"))
+                            else
                             {
-                                Fields[4] = Fields[4].TrimStart('$', ' ');
+                                break;
                             }
-                            if (Fields[5].Contains("\r"))
-                            {
-                                Fields[5] = Fields[5].Remove(Fields[5].Length - 1, 1);
-                            }
-                            Farmacos Farmaco = new Farmacos();
-                            DatosArbol FarmacoArbol = new DatosArbol();
-                            FarmacoArbol.IdA = Convert.ToInt32(Fields[0]);
-                            FarmacoArbol.NombreA = Fields[1];
-                            Farmaco.Id = Convert.ToInt32(Fields[0]);
-                            Farmaco.Nombre = Fields[1];
-                            Farmaco.Descripcion = Fields[2];
-                            Farmaco.Casa_productora = Fields[3];
-                            Farmaco.Precio = Convert.ToDouble(Fields[4]);
-                            Farmaco.Existencia = Convert.ToInt32(Fields[5]);
-                            ListaArtesanalFarmacos.AddArtesanal(Farmaco);
-                            ArbolBinario.AddArbol(FarmacoArbol, FarmacoArbol.OrdenarPorNombreArbol);
-                        }       
-                        else
-                        {
-                            break;
                         }
                     }
+                    return RedirectToAction(nameof(MostrarIndice));
                 }
-                return RedirectToAction(nameof(MostrarIndice));
+                else
+                {
+                    return View("ImportarCSV");
+                }
             }
-            else
-            {
+            else {
+                
                 return View("ImportarCSV");
+                
             }
         }
 
@@ -111,19 +119,6 @@ namespace LAB02_1070720_1084120.Controllers
             Farmacos producto = new Farmacos();
             producto.Id = Id;
             producto = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto);
-            //producto.Nombre = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto).Nombre;
-            //producto.Descripcion = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto).Descripcion;
-            //Farmacos buscar = new Farmacos();
-            //Farmacos encontrar = new Farmacos();
-            //buscar.Id = buscarfarmaco.IdA;
-
-           //if (Convert.ToInt32(delegates.DynamicInvoke(ListaArtesanalFarmacos.FindAllArtesanal(buscar.OrdenarPorId, buscar, ListaArtesanalFarmacos), buscarfarmaco)) == 0)
-           // {
-           //     //datos lista
-           //     encontrar.Id = buscar.Id;
-           //     encontrar.Nombre = buscar.Nombre;
-           //     encontrar.Descripcion = buscar.Descripcion;
-           // }
 
             return View(producto);
         }
@@ -190,29 +185,35 @@ namespace LAB02_1070720_1084120.Controllers
             //BuscarF(editar.IdA);
             editar_lista.Id = editar.IdA;
             editar_lista = ListaArtesanalFarmacos.BuscarIdArtesanal(editar_lista.OrdenarPorId, editar_lista);
-            if (cantidad <= editar_lista.Existencia && cantidad >= 0)
+            double preciopagar = 0;
+            if (editar != null)
             {
-                editar_lista.Existencia = editar_lista.Existencia - cantidad;
-                DatosPedidoNuevo.Preciototal = DatosPedidoNuevo.Preciototal + (editar_lista.Precio * cantidad);
-                DatosPedidoNuevo.ListaPedido.AddArtesanal(editar_lista);
-                ViewBag.Farmacos = DatosPedidoNuevo.ListaPedido;
-
-                if (editar_lista.Existencia == 0)
+                if (cantidad <= editar_lista.Existencia && cantidad >= 0)
                 {
-                    ArbolBinario.EliminarFarmaco(editar, editar.OrdenarPorNombreArbol);
-                    SinExistencia.AddArtesanal(editar_lista);
-                }
+                    editar_lista.Existencia = editar_lista.Existencia - cantidad;
+                    preciopagar += (editar_lista.Precio * cantidad);
+                    DatosPedidoNuevo.Preciototal = DatosPedidoNuevo.Preciototal + (editar_lista.Precio * cantidad);
+                    DatosPedidoNuevo.ListaPedido.AddArtesanal(editar_lista);
+                    ViewBag.Farmacos = DatosPedidoNuevo.ListaPedido;
 
+                    if (editar_lista.Existencia == 0)
+                    {
+                        ArbolBinario.EliminarFarmaco(editar, editar.OrdenarPorNombreArbol);
+                        SinExistencia.AddArtesanal(editar_lista);
+                    }
+
+                }
+                else
+                {
+                    //mensaje de error
+                    DatosPedidoNuevo.Preciototal = preciopagar;
+                    return View("CompraNegada");
+                }
             }
-            else
-            {
-                //mensaje de error
-                return View("CompraNegada");
-            }
-            DatosPedidoNuevo.NombreCliente = collection["Nombre"];
+            DatosPedidoNuevo.NombreCliente = collection["NombreCliente"];
             DatosPedidoNuevo.Nit = Convert.ToInt32(collection["Nit"]);
             DatosPedidoNuevo.Direccion = collection["Direccion"];
-
+            DatosPedidoNuevo.Preciototal =Math.Round(preciopagar, 2, MidpointRounding.AwayFromZero);
             return View("RealizarPedido", DatosPedidoNuevo);
         }
 
@@ -240,6 +241,28 @@ namespace LAB02_1070720_1084120.Controllers
         {
             ViewBag.Farmacos = DatosPedidoNuevo.ListaPedido;
             return View(DatosPedidoNuevo);
+        }
+
+        //REABASTECER
+        public ActionResult Reabastecer()
+        {
+            foreach (var item in SinExistencia)
+            {
+                int numero;
+                Farmacos producto = new Farmacos();
+                int id = item.Id;
+                producto.Id = id;
+                producto = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto);
+                Random rdn = new Random();
+                numero = rdn.Next(1, 15);
+                producto.Existencia = numero;
+                DatosArbol ProductoArbol = new DatosArbol();
+                ProductoArbol.IdA = item.Id;
+                ProductoArbol.NombreA = item.Nombre;
+                ArbolBinario.AddArbol(ProductoArbol, ProductoArbol.OrdenarPorNombreArbol);
+                
+            }
+            return View(SinExistencia);
         }
     }
 }
