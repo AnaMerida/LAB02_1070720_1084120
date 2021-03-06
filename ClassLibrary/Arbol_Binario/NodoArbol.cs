@@ -6,13 +6,11 @@ namespace ClassLibrary
 {
     public class NodoArbol<T>
     {
-        public string Nombre { get; set;}
-        public int Id { get; set;}
-
         public NodoArbol<T> izquierdo;
         public NodoArbol<T> derecho;
+        //prueba
         public NodoArbol<T> padre;
-        public T DatosArbol { get; set; }
+        public T DatoNodoArbol { get; set; }
         public NodoArbol<T> Izquierdo
         {
             get { return izquierdo; }
@@ -23,10 +21,7 @@ namespace ClassLibrary
             get { return derecho; }
             set { derecho = value; }
         }
-        //public NodoArbol<T> Padre
-        //{
-        //    get { return padre; }
-        //    set { padre = value; }
-        //}
+
+        
     }
 }

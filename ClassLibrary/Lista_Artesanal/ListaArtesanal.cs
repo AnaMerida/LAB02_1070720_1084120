@@ -15,38 +15,6 @@ namespace ClassLibrary
 
         public ListaArtesanal() { }
 
-        //public ListaArtesanal<T> AgregarDelegado(Delegate delegates, T farmaco, ListaArtesanal<T> L)
-        //{
-        //    Nodo<T> nuevo = L.inicio;
-        //    ListaArtesanal<T> temp = new ListaArtesanal<T>();
-
-        //    if (inicio == null)
-        //    {
-        //        temp.AddArtesanal(nuevo.DatosFarmacos);
-        //    }
-        //    else
-        //    {
-        //        while (nuevo != L.fin.siguiente)
-        //        {
-        //            if (Convert.ToInt32(delegates.DynamicInvoke(nuevo.DatosFarmacos, farmaco)) != 0)
-        //            {
-        //                temp.AddArtesanal(nuevo.DatosFarmacos);
-        //                nuevo = nuevo.siguiente;
-        //            }
-        //            else
-        //            {
-        //                nuevo = nuevo.siguiente;
-        //            }
-        //        }
-        //    }
-        //    return temp;
-        //}
-
-        //public void AddDelegado(Delegate delegates, T farmaco, ListaArtesanal<T> L)
-        //{
-        //    AgregarDelegado(delegates, farmaco, L);
-        //}
-
         protected override void Agregar(T farmaco)
         {
             Nodo<T> nuevo = new Nodo<T>();
@@ -165,15 +133,37 @@ namespace ClassLibrary
             }
             return vacio;
         }
-        public ListaArtesanal<T> FindAllArtesanal(Delegate delegates, T DatosFarmacos, ListaArtesanal<T> L)
+        public Nodo<T> FindAllArtesanal(Delegate delegates, T DatosFarmacos, ListaArtesanal<T> L)
         {
             Nodo<T> NodoFarmacos = L.inicio;
-            ListaArtesanal<T> ListaBusquedaA = new ListaArtesanal<T>();
+            Nodo<T> Encontrado = new Nodo<T>();
+
             while (NodoFarmacos != L.fin.siguiente)
             {
                 if (Convert.ToInt32(delegates.DynamicInvoke(NodoFarmacos.DatosFarmacos, DatosFarmacos)) == 0)
                 {
-                    ListaBusquedaA.AddArtesanal(NodoFarmacos.DatosFarmacos);
+                    Encontrado.DatosFarmacos = NodoFarmacos.DatosFarmacos;
+                    NodoFarmacos = NodoFarmacos.Siguiente;
+                }
+                else
+                {
+                    NodoFarmacos = NodoFarmacos.Siguiente;
+                }
+  
+            }
+            return Encontrado;
+        }
+
+        public ListaArtesanal<T> FindArtesanal(Delegate delegates, T DatosFarmacos, ListaArtesanal<T> L)
+        {
+            Nodo<T> NodoFarmacos = L.inicio;
+            ListaArtesanal<T> ListaBusqueda = new ListaArtesanal<T>();
+
+            while (NodoFarmacos != L.fin.siguiente)
+            {
+                if (Convert.ToInt32(delegates.DynamicInvoke(NodoFarmacos.DatosFarmacos, DatosFarmacos)) == 0)
+                {
+                    ListaBusqueda.AddArtesanal(NodoFarmacos.DatosFarmacos);
                     NodoFarmacos = NodoFarmacos.Siguiente;
                 }
                 else
@@ -181,8 +171,20 @@ namespace ClassLibrary
                     NodoFarmacos = NodoFarmacos.Siguiente;
                 }
             }
-            return ListaBusquedaA;
+            return ListaBusqueda;
         }
+
+        public void Reabastecer()
+        {
+            Nodo<T> nuevo = new Nodo<T>();
+            Nodo<T> nuevo2 = new Nodo<T>();
+            while (nuevo != null)
+            {
+
+                nuevo = nuevo.siguiente;
+            }
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             var nodo = inicio;

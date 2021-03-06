@@ -1,10 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Importar CSV";
+﻿
+@{
+    ViewData["Title"] = "Index";
 }
 
+<div class="text-center">
+
+    <h1>Tu salud en mis manos</h1>
+    <h3>
+        Laboratorio 2
+        Estructuras de Datos
+    </h3>
+</div>
 <div class="btn-group" role="group">
     <a asp-controller="Farmacos" asp-action="ImportarCSV"
        class="btn btn-primary">
         Importar Archivo CSV
+    </a>
+</div>
+
+<div class="btn-group" role="group">
+    <a asp-controller="Farmacos" asp-action="MostrarIndice"
+       class="btn btn-primary">
+        Mostrar indice de farmacos
+    </a>
+</div>
+
+<div class="btn-group" role="group">
+    <a asp-controller="Farmacos" asp-action="RealizarPedido"
+       class="btn btn-primary">
+        Realizar pedido
+    </a>
+</div>
+
+<div class="btn-group" role="group">
+    <a asp-controller="Farmacos" asp-action="Reabastecer"
+       class="btn btn-primary">
+        Reabastecer producto
     </a>
 </div>

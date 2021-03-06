@@ -1,0 +1,54 @@
+﻿@model LAB02_1070720_1084120.Models.Farmacos
+
+@{
+    ViewData["Title"] = "ProductoAComprar";
+}
+
+<h1>Agregar a su Carrito</h1>
+
+<h4>Datos del Producto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" readonly />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" readonly />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control" readonly />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Casa_productora" class="control-label"></label>
+                <input asp-for="Casa_productora" class="form-control" readonly />
+                <span asp-validation-for="Casa_productora" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Existencia" class="control-label"></label>
+                <input asp-for="Existencia" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Precio" class="control-label"></label>
+                <input asp-for="Precio" class="form-control" readonly />
+                <span asp-validation-for="Precio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for= "Existencia" class="control-label">Cantidad de producto a comprar</label>
+                <input asp-for="Existencia" class="form-control"  />
+                <span asp-validation-for="Existencia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Agregar al Carrito" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
