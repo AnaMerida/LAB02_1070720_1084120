@@ -8,7 +8,7 @@ namespace ClassLibrary
 {
     public class ArbolBinario<T> : InterfazArbol<T> where T : IComparable
     {
-       
+        public string ArbolOrdenado = "";
         NodoArbol<T> padre = new NodoArbol<T>();
         public int contador = 0;
         //AGREGAR
@@ -39,81 +39,6 @@ namespace ClassLibrary
         {
             AgregarArbol(farmaco,  delegates, padre);
         }
-
-        //ELIMINAR
-        
-        //protected override void EliminarArbol(T farmaco, Delegate delegates, NodoArbol<T> padre)
-        //{
-        //    if (padre.DatoNodoArbol != null)
-        //    {
-        //        if (Convert.ToInt32(delegates.DynamicInvoke(padre.DatoNodoArbol, farmaco)) == 1)//menor
-        //        {
-        //            EliminarArbol(farmaco, delegates, padre.izquierdo);
-        //        }
-        //        else if (Convert.ToInt32(delegates.DynamicInvoke(padre.DatoNodoArbol, farmaco)) == -1)//mayor
-        //        {
-        //            EliminarArbol(farmaco, delegates, padre.derecho);
-        //        }
-        //        else if (Convert.ToInt32(delegates.DynamicInvoke(padre.DatoNodoArbol, farmaco)) == 0)
-        //        {
-        //            NodoArbol<T> NodoEliminar = padre;
-        //            NodoArbol<T> NodoTemp = new NodoArbol<T>();
-
-        //            EliminarNodoArbol(padre);
-        //        }
-        //    }
-        //}
-        
-        //protected override void EliminarNodoArbol(NodoArbol<T> padre)
-        //{
-        //    //tiene dos hijos
-        //    if (padre.izquierdo.DatoNodoArbol != null && padre.derecho.DatoNodoArbol != null)
-        //    {
-        //        NodoArbol<T> minimo = minimo_izquierdo(padre.derecho);
-        //        padre.DatoNodoArbol = minimo.DatoNodoArbol;
-        //        EliminarNodoArbol(minimo);
-        //    }
-        //    //tiene un hijo izquierdo pero no derecho
-        //    else if (padre.izquierdo.DatoNodoArbol == null && padre.derecho.DatoNodoArbol != null)
-        //    {
-
-        //        NodoArbol<T> NodoEliminar = padre; 
-        //        NodoArbol<T> NodoTemp = new NodoArbol<T>();
-        //        padre = padre.izquierdo;
-        //        while(padre.derecho.DatoNodoArbol != null)
-        //        {
-        //            NodoTemp = padre;
-        //            padre = padre.derecho;
-        //        }
-        //        NodoEliminar.DatoNodoArbol = padre.DatoNodoArbol;
-
-        //    }
-        //    //tiene un hijo derecho pero no izquierdo
-        //    else if (padre.derecho == null && padre.izquierdo != null)
-        //    {
-
-        //    }
-        //}
-        //public void reemplazar_nodos(NodoArbol<T> padre, NodoArbol<T> nuevo)
-        //{
-
-        //}
-
-        //public NodoArbol<T> minimo_izquierdo(NodoArbol<T> padre)
-        //{
-        //    if (padre.DatoNodoArbol == null)
-        //    {
-        //        return null;
-        //    }
-        //    if (padre.izquierdo != null)
-        //    {
-        //        return minimo_izquierdo(padre.izquierdo);
-        //    }
-        //    else
-        //    {
-        //        return padre;
-        //    }
-        //}
 
         //ELIMINAR 2
         public void EliminarFarmaco(T farmaco, Delegate delegates) 
@@ -193,6 +118,53 @@ namespace ClassLibrary
             public T SearchFarmaco(T farmaco, Delegate delegates)
         {
             return BuscarFarmaco(farmaco, delegates, padre);
+        }
+        
+        public string PostOrder(NodoArbol<T> Nodo)
+        {
+            if (Nodo != null)
+            {
+                PostOrder(Nodo.izquierdo);
+                PostOrder(Nodo.derecho);
+                ArbolOrdenado += Convert.ToString((Nodo.DatoNodoArbol + "\n"));
+            }
+            return ArbolOrdenado;
+        }
+
+        public string InOrder(NodoArbol<T> Nodo)
+        {
+            if (Nodo != null)
+            {
+                PostOrder(Nodo.izquierdo);
+                ArbolOrdenado += Convert.ToString((Nodo.DatoNodoArbol + "\n"));
+                PostOrder(Nodo.derecho);
+            }
+                          
+            return ArbolOrdenado;
+        }
+        public string PreOrder(NodoArbol<T> Nodo)
+        {
+            if (Nodo != null)
+            {
+                ArbolOrdenado += Convert.ToString((Nodo.DatoNodoArbol + "\n"));
+                PostOrder(Nodo.izquierdo);
+                PostOrder(Nodo.derecho);
+            }
+            return ArbolOrdenado;
+        }
+
+        public void Pre() 
+        {
+            PreOrder(padre);
+        }
+
+        public void In()
+        {
+            InOrder(padre);
+        }
+        public void Post()
+        {
+            PostOrder(padre);
         }
 
     }

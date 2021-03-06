@@ -9,7 +9,13 @@
 <div class="btn-group" role="group">
     <a asp-controller="Home" asp-action="Index"
        class="btn btn-primary">
-       Regresar al inicio
+        Regresar al inicio
+    </a>
+</div>
+<div class="btn-group" role="group">
+    <a asp-controller="Farmacos" asp-action="Exportar"
+       class="btn btn-primary">
+        Exportar Archivo
     </a>
 </div>
 
@@ -28,15 +34,21 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
 
-        </tr>
+            </tr>
         }
     </tbody>
 </table>
+<div class="btn-group" role="group">
+    <a asp-controller="Home" asp-action="Index"
+       class="btn btn-primary">
+        Regresar al inicio
+    </a>
+</div>

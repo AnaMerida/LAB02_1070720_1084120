@@ -25,6 +25,8 @@ namespace LAB02_1070720_1084120.Controllers
         public static ListaArtesanal<Farmacos> SinExistencia = new ListaArtesanal<Farmacos>();
         public static ListaArtesanal<DatosPedidos> ListaPedidos = new ListaArtesanal<DatosPedidos>();
         public static DatosPedidos DatosPedidoNuevo = new DatosPedidos();
+        public static string ArbolEnOrden;
+        
         public ActionResult ImportarCSV()
         {
             return View();
@@ -137,16 +139,28 @@ namespace LAB02_1070720_1084120.Controllers
             return View();
         }
 
-            public ActionResult MostrarIndice()
+        public ActionResult MostrarIndice(string Filtros)
         {
+             
             return View(ListaArtesanalFarmacos);
         }
-
-        // GET: FarmacosController
-        public ActionResult Index()
+        public ActionResult MostrarIndicePO()
         {
-            return View();
+           ArbolBinario.Post();
+            return RedirectToAction(nameof(MostrarIndice));
         }
+        public ActionResult MostrarIndicePRE()
+        {
+            ArbolBinario.Pre();
+            return RedirectToAction(nameof(MostrarIndice));
+        }
+        public ActionResult MostrarIndiceIN()
+        {
+            ArbolBinario.In();
+            return RedirectToAction(nameof(MostrarIndice));
+        }
+
+
 
         // GET: FarmacosController/Details/5
         public ActionResult Details(int id)
@@ -263,6 +277,20 @@ namespace LAB02_1070720_1084120.Controllers
                 
             }
             return View(SinExistencia);
+        }
+        public ActionResult Exportar()
+        {
+            foreach (var item in ListaArtesanalFarmacos)
+            {
+                Farmacos producto = new Farmacos();
+                int id = item.Id;
+                producto.Id = id;
+                producto = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto);
+                ArbolEnOrden += Convert.ToString(producto.Id + "," + producto.Nombre);
+            }
+            StreamWriter texto = new StreamWriter("Archivo.txt");
+            texto.Write(ArbolEnOrden);
+            return RedirectToAction(nameof(MostrarIndice));
         }
     }
 }
