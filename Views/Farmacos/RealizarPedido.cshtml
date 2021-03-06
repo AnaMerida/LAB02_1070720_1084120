@@ -1,0 +1,102 @@
+﻿@model LAB02_1070720_1084120.Models.DatosPedidos
+
+@{
+    ViewData["Title"] = "RealizarPedido";
+}
+<h1>Busque un Producto para agregarlo a su carrito de compra</h1>
+
+<form asp-controller="Farmacos" asp-action="BuscarProducto">
+    <input class="form-control" type="search" value="" placeholder="Search" aria-label="Search" name="TextoBusqueda">
+    <button class="btn btn-outline-info" role="button" type="submit">Buscar</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id Producto
+            </th>
+            <th>
+                Nombre Producto
+            </th>
+            <th>
+                Descripcion
+            </th>
+            <th>
+                Casa Productora
+            </th>
+            <th>
+                Precio
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (LAB02_1070720_1084120.Models.Farmacos item in ViewBag.Farmacos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Casa_productora)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*<div class="btn-group" role="group">
+    <a asp-controller="Farmacos" asp-action="ComprarPedidos"
+       class="btn btn-primary">
+        Comprar pedido
+    </a>
+</div>*@
+
+<h1>Confirme la compra de su pedido</h1>
+
+<h4>DatosPedidos</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ComprarPedidos">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NombreCliente" class="control-label"></label>
+                <input class="form-control" />
+                <span asp-validation-for="NombreCliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Direccion" class="control-label"></label>
+                <input asp-for="Direccion" class="form-control" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nit" class="control-label"></label>
+                <input asp-for="Nit" class="form-control" />
+                <span asp-validation-for="Nit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Preciototal" class="control-label"></label>
+                <input asp-for="Preciototal" class="form-control" readonly />
+                <span asp-validation-for="Preciototal" class="text-danger"></span>
+            </div>
+            <div class="btn-group" role="group">
+            <a asp-controller="Farmacos" asp-action="FinPedido"
+               class="btn btn-primary">
+                Comprar pedido
+            </a>
+    </div>
+    </form>
+</div>
+</div>
+
+
+

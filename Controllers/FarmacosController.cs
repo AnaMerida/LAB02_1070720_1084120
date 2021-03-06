@@ -22,6 +22,9 @@ namespace LAB02_1070720_1084120.Controllers
     {
         public static ArbolBinario<DatosArbol> ArbolBinario = new ArbolBinario<DatosArbol>();
         public static ListaArtesanal<Farmacos> ListaArtesanalFarmacos = new ListaArtesanal<Farmacos>();
+        public static ListaArtesanal<Farmacos> SinExistencia = new ListaArtesanal<Farmacos>();
+        public static ListaArtesanal<DatosPedidos> ListaPedidos = new ListaArtesanal<DatosPedidos>();
+        public static DatosPedidos DatosPedidoNuevo = new DatosPedidos();
         public ActionResult ImportarCSV()
         {
             return View();
@@ -62,24 +65,88 @@ namespace LAB02_1070720_1084120.Controllers
                             Farmaco.Nombre = Fields[1];
                             Farmaco.Descripcion = Fields[2];
                             Farmaco.Casa_productora = Fields[3];
-                            Farmaco.precio = Convert.ToDouble(Fields[4]);
-                            Farmaco.existencia = Convert.ToInt32(Fields[5]);
+                            Farmaco.Precio = Convert.ToDouble(Fields[4]);
+                            Farmaco.Existencia = Convert.ToInt32(Fields[5]);
                             ListaArtesanalFarmacos.AddArtesanal(Farmaco);
-                            ArbolBinario.AddArbol(FarmacoArbol, FarmacoArbol.OrdenarPorNombreArbol);  
-                        }
+                            ArbolBinario.AddArbol(FarmacoArbol, FarmacoArbol.OrdenarPorNombreArbol);
+                        }       
                         else
                         {
                             break;
                         }
                     }
                 }
-                return View("Index");    
+                return RedirectToAction(nameof(MostrarIndice));
             }
             else
             {
                 return View("ImportarCSV");
             }
         }
+
+        public ActionResult BuscarProducto(string TextoBusqueda)
+        {
+            DatosArbol buscarfarmaco = new DatosArbol();
+            buscarfarmaco.NombreA = TextoBusqueda;
+            buscarfarmaco = ArbolBinario.SearchFarmaco(buscarfarmaco, buscarfarmaco.OrdenarPorNombreArbol);
+           
+            if (buscarfarmaco != null)
+            {
+                //Encontro el producto, para agregarlo
+
+                BuscarF(buscarfarmaco.IdA);
+                return View("ProductoAComprar");
+            }
+            else
+            {
+                //Lista artesanal
+                ViewBag.Farmacos = DatosPedidoNuevo.ListaPedido;
+                return View("RealizarPedido");
+            }
+        }
+
+        public ActionResult BuscarF(int Id)
+        {
+            
+            Farmacos producto = new Farmacos();
+            producto.Id = Id;
+            producto = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto);
+            //producto.Nombre = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto).Nombre;
+            //producto.Descripcion = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto).Descripcion;
+            //Farmacos buscar = new Farmacos();
+            //Farmacos encontrar = new Farmacos();
+            //buscar.Id = buscarfarmaco.IdA;
+
+           //if (Convert.ToInt32(delegates.DynamicInvoke(ListaArtesanalFarmacos.FindAllArtesanal(buscar.OrdenarPorId, buscar, ListaArtesanalFarmacos), buscarfarmaco)) == 0)
+           // {
+           //     //datos lista
+           //     encontrar.Id = buscar.Id;
+           //     encontrar.Nombre = buscar.Nombre;
+           //     encontrar.Descripcion = buscar.Descripcion;
+           // }
+
+            return View(producto);
+        }
+
+        [HttpPost]
+        public ActionResult BuscarF(int Id, IFormCollection collection) 
+        {
+            Farmacos producto = new Farmacos();
+            producto.Id = Id;
+            producto.Nombre = collection["Nombre"];
+            producto.Descripcion = collection["Descripcion"];
+            producto.Casa_productora = collection["Casa_productora"];
+            producto.Precio = Convert.ToDouble(collection["Precio"]);
+            producto.Existencia = Convert.ToInt32(collection["Existencia"]);
+
+            return View();
+        }
+
+            public ActionResult MostrarIndice()
+        {
+            return View(ListaArtesanalFarmacos);
+        }
+
         // GET: FarmacosController
         public ActionResult Index()
         {
@@ -93,29 +160,19 @@ namespace LAB02_1070720_1084120.Controllers
         }
 
         // GET: FarmacosController/Create
-        public ActionResult Create()
+        public ActionResult FinPedido()
         {
-            return View();
-        }
-
-        // POST: FarmacosController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            DatosPedidoNuevo = new DatosPedidos();
+            return View("FinPedido");
         }
 
         // GET: FarmacosController/Edit/5
         public ActionResult Edit(int id)
         {
+            Farmacos producto = new Farmacos();
+            producto.Id = id;
+            producto = ListaArtesanalFarmacos.BuscarIdArtesanal(producto.OrdenarPorId, producto);
+
             return View();
         }
 
@@ -124,14 +181,39 @@ namespace LAB02_1070720_1084120.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            DatosArbol editar = new DatosArbol();
+            editar.NombreA = collection["Nombre"];
+            editar = ArbolBinario.SearchFarmaco(editar, editar.OrdenarPorNombreArbol);
+            int cantidad = Convert.ToInt32(collection["Existencia"]);
+            Farmacos editar_lista = new Farmacos();
+            editar_lista.Existencia = Convert.ToInt32(collection["Existencia"]);
+            //BuscarF(editar.IdA);
+            editar_lista.Id = editar.IdA;
+            editar_lista = ListaArtesanalFarmacos.BuscarIdArtesanal(editar_lista.OrdenarPorId, editar_lista);
+            if (cantidad <= editar_lista.Existencia && cantidad >= 0)
             {
-                return RedirectToAction(nameof(Index));
+                editar_lista.Existencia = editar_lista.Existencia - cantidad;
+                DatosPedidoNuevo.Preciototal = DatosPedidoNuevo.Preciototal + (editar_lista.Precio * cantidad);
+                DatosPedidoNuevo.ListaPedido.AddArtesanal(editar_lista);
+                ViewBag.Farmacos = DatosPedidoNuevo.ListaPedido;
+
+                if (editar_lista.Existencia == 0)
+                {
+                    ArbolBinario.EliminarFarmaco(editar, editar.OrdenarPorNombreArbol);
+                    SinExistencia.AddArtesanal(editar_lista);
+                }
+
             }
-            catch
+            else
             {
-                return View();
+                //mensaje de error
+                return View("CompraNegada");
             }
+            DatosPedidoNuevo.NombreCliente = collection["Nombre"];
+            DatosPedidoNuevo.Nit = Convert.ToInt32(collection["Nit"]);
+            DatosPedidoNuevo.Direccion = collection["Direccion"];
+
+            return View("RealizarPedido", DatosPedidoNuevo);
         }
 
         // GET: FarmacosController/Delete/5
@@ -153,6 +235,11 @@ namespace LAB02_1070720_1084120.Controllers
             {
                 return View();
             }
+        }
+        public ActionResult RealizarPedido()
+        {
+            ViewBag.Farmacos = DatosPedidoNuevo.ListaPedido;
+            return View(DatosPedidoNuevo);
         }
     }
 }

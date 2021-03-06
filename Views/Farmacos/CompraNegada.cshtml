@@ -1,0 +1,15 @@
+﻿@model LAB02_1070720_1084120.Models.Farmacos
+
+@{
+    ViewData["Title"] = "CompraNegada";
+}
+
+<h1>Su compra ha sido denegada</h1>
+<p>Usted está ingresando una cantidad de compra de producto mayor a la existencia disponible</p>
+
+<div class="btn-group" role="group">
+    <a asp-controller="Farmacos" asp-action="RealizarPedido"
+       class="btn btn-primary">
+        Regresar a hacer pedido
+    </a>
+</div>

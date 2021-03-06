@@ -8,6 +8,8 @@ namespace ClassLibrary
     {
         public NodoArbol<T> izquierdo;
         public NodoArbol<T> derecho;
+        //prueba
+        public NodoArbol<T> padre;
         public T DatoNodoArbol { get; set; }
         public NodoArbol<T> Izquierdo
         {
@@ -19,5 +21,7 @@ namespace ClassLibrary
             get { return derecho; }
             set { derecho = value; }
         }
+
+        
     }
 }

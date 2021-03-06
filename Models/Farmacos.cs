@@ -17,9 +17,11 @@ namespace LAB02_1070720_1084120.Models
         [Required]
         public string Casa_productora { get; set; }
         [Required]
-        public double precio { get; set; }
+        public double Precio { get; set; }
         [Required]
-        public int existencia { get; set; }
+        public int Existencia { get; set; }
+
+        
 
         public int CompareTo(object obj)
         {
@@ -34,6 +36,6 @@ namespace LAB02_1070720_1084120.Models
         {
             return f1.Nombre.CompareTo(f2.Nombre);
         };
-         
+
     }
 }

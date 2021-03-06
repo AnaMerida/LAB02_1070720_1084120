@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LAB02_1070720_1084120.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace LAB02_1070720_1084120.Models
 {
     public class DatosArbol : IComparable
     {
+        [Required]
         public int IdA { get; set; }
+        [Required]
         public string NombreA { get; set; }
 
         public int CompareTo(object obj)
